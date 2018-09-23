@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Contains persian_alterchar.module.
+ */
+
+function persian_alterchar_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  $replacement_pattern = array("/ي/", "/ك/", "/٤/", "/٥/", "/٦/" ); 
+  $persian_replacement = array("ی", "ک", "۴", "۵", "۶" );
+  $nodeTitle = $entity->getTitle();
+
+  if ($entity instanceof \Drupal\node\NodeInterface) { 
+    if(!empty($entity->body->value)){
+      $entity->body->value = preg_replace($replacement_pattern, $persian_replacement , $entity->body->value);
+    }
+    $entity->setTitle(preg_replace($replacement_pattern, $persian_replacement , $entity->getTitle()));
+  }
+  
+} 

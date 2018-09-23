@@ -1,0 +1,7 @@
+name: Persian Alternative Characters
+type: module
+description: Changes Arabic characters to Persian upon saving the node
+# core: 8.x
+project: 'persian_alterchar'
+version: '8.x-1.0'
+core: '8.x'
