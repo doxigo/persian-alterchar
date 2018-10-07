@@ -11,11 +11,19 @@ function persian_alterchar_entity_presave(Drupal\Core\Entity\EntityInterface $en
   
   /* Check whether it's a node */
   if ($entity instanceof \Drupal\node\NodeInterface) {
+    // Node title
     $nodeTitle = $entity->getTitle();
+    $entity->setTitle(preg_replace($replacement_pattern, $persian_replacement , $nodeTitle));
+
+    // Body main
     if(!empty($entity->body->value)) {
       $entity->body->value = preg_replace($replacement_pattern, $persian_replacement , $entity->body->value);
     }
-    $entity->setTitle(preg_replace($replacement_pattern, $persian_replacement , $nodeTitle));
+
+    // Body Summary
+    if(!empty($entity->body->summary)) {
+      $entity->body->summary = preg_replace($replacement_pattern, $persian_replacement , $entity->body->summary);
+    }
   }
 
   /* Check whether it's a taxonomy term */
@@ -26,4 +34,4 @@ function persian_alterchar_entity_presave(Drupal\Core\Entity\EntityInterface $en
     }
   }
   
-} 
+}
