@@ -8,13 +8,22 @@
 function persian_alterchar_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
   $replacement_pattern = array("/ي/", "/ك/", "/٤/", "/٥/", "/٦/" ); 
   $persian_replacement = array("ی", "ک", "۴", "۵", "۶" );
-  $nodeTitle = $entity->getTitle();
-
-  if ($entity instanceof \Drupal\node\NodeInterface) { 
-    if(!empty($entity->body->value)){
+  
+  /* Check whether it's a node */
+  if ($entity instanceof \Drupal\node\NodeInterface) {
+    $nodeTitle = $entity->getTitle();
+    if(!empty($entity->body->value)) {
       $entity->body->value = preg_replace($replacement_pattern, $persian_replacement , $entity->body->value);
     }
-    $entity->setTitle(preg_replace($replacement_pattern, $persian_replacement , $entity->getTitle()));
+    $entity->setTitle(preg_replace($replacement_pattern, $persian_replacement , $nodeTitle));
+  }
+
+  /* Check whether it's a taxonomy term */
+  if ($entity instanceof \Drupal\taxonomy\Entity\Term) {
+    $entity->name->value = preg_replace($replacement_pattern, $persian_replacement , $entity->name->value);
+    if(!empty($entity->description->value)) {
+      $entity->description->value = preg_replace($replacement_pattern, $persian_replacement , $entity->description->value);
+    }
   }
   
 } 
